@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 
 class Board {
     std::vector<std::vector<char>> playing_board = { 
@@ -155,10 +156,10 @@ int main() {
         std::cin >> start_state;
     }
 
-    std::cout << start_state << '\n';
+    // std::cout << start_state << '\n';
     Board b = Board(start_state);
     std::cout << "Starting board\n" << b;
-    std::cout << b.player_turn << '\n';
+    // std::cout << b.player_turn << '\n';
 
     int r{ 5 };
     int c{ 5 };
@@ -181,17 +182,21 @@ int main() {
             std::cout << b;
             if (b.check_player_won()) {
                 std::cout << "Player won!";
-                break;
+                return 0;
             }
         } else {
             std::cout << "Computer turn\n";
+            auto start = std::chrono::high_resolution_clock::now();
             std::vector<int> best_move = find_move(b);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+            std::cout << "Execution time:" << duration.count() << '\n';
             b.set_box(best_move[0], best_move[1]);
-            std::cout << b.player_turn << '\n';
+            // std::cout << b.player_turn << '\n';
             std::cout << b;
             if (b.check_com_won()) {
                 std::cout << "Computer won!";
-                break;
+                return 0;
             }
         }
     }
