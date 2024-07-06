@@ -81,6 +81,7 @@ class Board {
 
     void unset_box(int r, int c) {
         playing_board[r][c] = '-';
+        player_turn = !player_turn;
     }
 };
 
@@ -128,7 +129,7 @@ std::vector<int> find_move(Board& board) {
     int tmp_score {};
     std::vector<int> best_move;
     for (int i { 0 }; i < 3; ++i) {
-        for (int j {0}; j < 3; ++j) {
+        for (int j { 0 }; j < 3; ++j) {
             if (board.check_empty(i, j)) {
                 board.set_box(i, j);
                 tmp_score = minimax(board, false, 0);
@@ -154,14 +155,15 @@ int main() {
         std::cin >> start_state;
     }
 
-    std::cout << start_state;
+    std::cout << start_state << '\n';
     Board b = Board(start_state);
     std::cout << "Starting board\n" << b;
-    std::cout << b.player_turn;
+    std::cout << b.player_turn << '\n';
 
     int r{ 5 };
     int c{ 5 };
     while (!b.check_full()) {
+        // std::cout << b.player_turn << '\n';
         if (b.player_turn) {
             std::cout << "Player turn\n";
             //while ((r < 0 || r > 2) && (c < 0 || c > 2)) {
@@ -185,6 +187,7 @@ int main() {
             std::cout << "Computer turn\n";
             std::vector<int> best_move = find_move(b);
             b.set_box(best_move[0], best_move[1]);
+            std::cout << b.player_turn << '\n';
             std::cout << b;
             if (b.check_com_won()) {
                 std::cout << "Computer won!";
