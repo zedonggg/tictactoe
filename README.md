@@ -8,12 +8,13 @@ When it is your (the player's) turn, you will be prompted to `Enter the row and 
 
 The game will automatically check if the computer or the player has won or if it is a draw and print the corresponding statement.
 
-## R1 ##
+## Version 1 ##
 I use a class to encapsulate the game board, with the game driver code under main(). The computer uses a rudimentary minimax algorithm to compute the optimal move to play. Since we only have to search a maximum of 19,683 different combinations (board states), we do not bother with depth limitations for now as the absolute running time of the minimax function is trivial. The reference for the minimax algo can be found in the source code under `main.cpp`.
 
 The running time of the minimax algorithm was logged using chrono and the results are shown below. One rudimentary optimization that is implemented is checking for grids that are already taken, so the minimax search will only be performed on empty grids where a move is possible. As such, the running time exponentially falls with subsequent calls to the minimax function as the game board becomes more populated.
 
 **Running time in microseconds when computer goes first**
+
 Moves input into console : `1 1`, `0 2`, `1 0`
 | Turns executed | Reading 1 | Reading 2 | Reading 3 |
 | --- | --- | --- | --- |
@@ -23,11 +24,14 @@ Moves input into console : `1 1`, `0 2`, `1 0`
 | 6 | 5 | 5 | 6 |
 
 **Running time in microseconds when computer goes last**
-Moves input into console : `1 1`, `0 2`, `1 0`
+
+Moves input into console : `0 0`, `1 0`, `0 1`
 | Turns executed | Reading 1 | Reading 2 | Reading 3 |
 | --- | --- | --- | --- |
-| 0 | 70262 | 67373 | 67267 |
-| 2 | 1193 | 1184 | 1135 |
-| 4 | 49 | 49 | 34 |
-| 6 | 5 | 5 | 6 |
+| 1 | 8075 | 7777 | 8156 |
+| 3 | 142 | 149 | 166 |
+| 5 | 6 | 8 | 7 |
+
+
+Curiously, the algorithmn largely appears to be deterministic, with the computer consistently playing the same moves. This is likely due to tic-tac-toe having a much simpler probability tree, compared to something like chess. If the computer starts first, it will always play in the corner as well, which is (correctly) the optimal way to play compared to beginning in the center.
 
